@@ -17,5 +17,21 @@ pipeline {
                 }
             }
         }
+        stage('Test') {
+            steps {
+                script {
+                    // Run npm test inside the container
+                    docker.image('node:18-alpine').inside {
+                        sh 'npm test'
+                    }
+                    // Now, check for the existence of build/index.html in the workspace
+                    if (fileExists('build/index.html')) {
+                        echo "Test Pass: index.html found in build directory."
+                    } else {
+                        error "Test Failed: index.html NOT found in build directory."
+                    }
+                }
+            }
+        }
     }
 }
