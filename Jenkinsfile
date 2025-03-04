@@ -56,12 +56,11 @@ pipeline {
 
             steps {
                 script {
-                    docker.image('node:18-alpine').inside {
+                    docker.image('node:mcr.microsoft.com/playwright:v1.39.0-jammy').inside {
                         sh '''
                             npm install serve
                             node_modules/.bin/serve -s build &
                             sleep 10
-                            npx playwright install 
                             npx playwright test
                         '''
                     }
